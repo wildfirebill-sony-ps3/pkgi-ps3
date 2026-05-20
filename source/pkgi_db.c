@@ -408,7 +408,7 @@ static void swap(uint32_t a, uint32_t b)
     db_item[b] = temp;
 }
 
-static int matches(GameRegion region, ContentType content, uint32_t filter)
+static int matches(GameRegion region, ContentType content, DbPresence presence, uint32_t filter)
 {
     return ((region == RegionASA && (filter & DbFilterRegionASA))
         || (region == RegionEUR && (filter & DbFilterRegionEUR))
@@ -425,7 +425,13 @@ static int matches(GameRegion region, ContentType content, uint32_t filter)
         || (content == ContentEmulator && (filter & DbFilterContentEmulator))
         || (content == ContentApp && (filter & DbFilterContentApp))
         || (content == ContentTool && (filter & DbFilterContentTool))
-        || (content == ContentUnknown));
+        || (content == ContentUnknown))
+
+        && ((presence == PresenceInstalled && (filter & DbFilterInstalled))
+        || (presence == PresenceMissing && (filter & DbFilterMissing))
+        || (presence == PresenceIncomplete)
+        || (presence == PresenceUnknown)
+        || (!(filter & (DbFilterInstalled | DbFilterMissing))));
 }
 
 static int lower(const DbItem* a, const DbItem* b, DbSort sort, DbSortOrder order, uint32_t filter)
@@ -451,8 +457,8 @@ static int lower(const DbItem* a, const DbItem* b, DbSort sort, DbSortOrder orde
         cmp = a->size < b->size;
     }
 
-    int matches_a = matches(reg_a, a->type, filter);
-    int matches_b = matches(reg_b, b->type, filter);
+    int matches_a = matches(reg_a, a->type, a->presence, filter);
+    int matches_b = matches(reg_b, b->type, b->presence, filter);
 
     if (matches_a == matches_b)
     {
@@ -546,7 +552,7 @@ void pkgi_db_configure(const char* search, const Config* config)
             uint32_t middle = (low + high) / 2;
 
             GameRegion region = pkgi_get_region(db_item[middle]->content);
-            if (matches(region, db_item[middle]->type, config->filter))
+            if (matches(region, db_item[middle]->type, db_item[middle]->presence, config->filter))
             {
                 low = middle + 1;
             }

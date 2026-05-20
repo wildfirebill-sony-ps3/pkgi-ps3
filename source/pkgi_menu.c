@@ -55,6 +55,10 @@ static MenuEntry menu_entries[] =
     { MenuFilter, "Japan", DbFilterRegionJPN },
     { MenuFilter, "USA", DbFilterRegionUSA },
 
+    { MenuText, "Status:", 0 },
+    { MenuFilter, "Installed", DbFilterInstalled },
+    { MenuFilter, "Missing", DbFilterMissing },
+
     { MenuText, "Options:", 0 },
     { MenuMode, "Back. DL", 1 },
     { MenuMusic, "Music", 1 },

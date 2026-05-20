@@ -86,6 +86,14 @@ static DbSortOrder parse_filter(char* value, uint32_t filter)
             {
                 result |= DbFilterRegionUSA;
             }
+            else if (pkgi_stricmp(start, "INSTALLED") == 0)
+            {
+                result |= DbFilterInstalled;
+            }
+            else if (pkgi_stricmp(start, "MISSING") == 0)
+            {
+                result |= DbFilterMissing;
+            }
             else
             {
                 return filter;
@@ -292,6 +300,16 @@ void pkgi_save_config(const Config* config, const char* update_url, uint32_t upd
     if (config->filter & DbFilterRegionUSA)
     {
         len += pkgi_snprintf(data + len, sizeof(data) - len, "%sUSA", sep);
+        sep = ",";
+    }
+    if (config->filter & DbFilterInstalled)
+    {
+        len += pkgi_snprintf(data + len, sizeof(data) - len, "%sINSTALLED", sep);
+        sep = ",";
+    }
+    if (config->filter & DbFilterMissing)
+    {
+        len += pkgi_snprintf(data + len, sizeof(data) - len, "%sMISSING", sep);
         sep = ",";
     }
     len += pkgi_snprintf(data + len, sizeof(data) - len, "\n");
