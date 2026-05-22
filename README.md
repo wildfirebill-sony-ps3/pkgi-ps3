@@ -1,4 +1,5 @@
 # PKGi PS3
+Modified by [wildfirebill](https://github.com/wildfirebill)
 
 [![Downloads][img_downloads]][pkgi_downloads] [![Release][img_latest]][pkgi_latest] [![License][img_license]][pkgi_license]
 [![Build package](https://github.com/bucanero/pkgi-ps3/actions/workflows/build.yml/badge.svg)](https://github.com/bucanero/pkgi-ps3/actions/workflows/build.yml)
